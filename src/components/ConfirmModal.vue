@@ -35,7 +35,7 @@
           <button type="button" class="btn-secondary" :disabled="loading" @click="$emit('cancel')">
             Cancelar
           </button>
-          <button type="button" class="btn-danger" :disabled="!loading" @click="$emit('confirm')">
+          <button type="button" class="btn-danger" :disabled="loading" @click="$emit('confirm')">
             {{ loading ? 'Procesando...' : confirmText }}
           </button>
         </div>
