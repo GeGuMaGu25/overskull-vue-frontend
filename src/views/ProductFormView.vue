@@ -75,11 +75,12 @@ async function submit() {
 
 <template>
   <section class="mx-auto max-w-2xl">
-    <RouterLink :to="{ name: 'products' }" class="text-sm text-indigo-600 hover:underline">
-      ← Volver al listado
+    <RouterLink :to="{ name: 'products' }" class="link">
+      <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+      Volver al listado
     </RouterLink>
 
-    <h1 class="mt-2 text-2xl font-bold text-gray-900">
+    <h1 class="page-title mt-3">
       {{ isEdit ? 'Editar producto' : 'Nuevo producto' }}
     </h1>
 
@@ -153,7 +154,7 @@ async function submit() {
         </select>
       </FormField>
 
-      <div class="flex justify-end gap-3 pt-2">
+      <div class="-mx-6 -mb-6 mt-2 flex justify-end gap-2 rounded-b-2xl border-t border-ink-100 bg-ink-50/60 px-6 py-4">
         <RouterLink :to="{ name: 'products' }" class="btn-secondary">Cancelar</RouterLink>
         <button type="submit" class="btn-primary" :disabled="productStore.saving">
           {{ productStore.saving ? 'Guardando...' : isEdit ? 'Actualizar producto' : 'Crear producto' }}

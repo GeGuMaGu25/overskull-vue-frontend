@@ -54,16 +54,17 @@ async function confirmDelete() {
 
 <template>
   <section>
-    <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+    <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900">Productos</h1>
-        <p class="text-sm text-gray-500">Gestiona el catálogo de productos</p>
+        <h1 class="page-title">Productos</h1>
+        <p class="page-subtitle">Gestiona el catálogo de productos</p>
       </div>
-      <RouterLink :to="{ name: 'product-create' }" class="btn-primary">+ Nuevo producto</RouterLink>
+      <RouterLink :to="{ name: 'product-create' }" class="btn-primary"><svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>
+          Nuevo producto</RouterLink>
     </div>
 
     <!-- Filtros -->
-    <div class="card mb-6 grid gap-4 sm:grid-cols-2">
+    <div class="card mb-4 grid gap-4 p-4 sm:grid-cols-[2fr_1fr]">
       <div>
         <label for="search" class="label">Buscar</label>
         <input
@@ -89,50 +90,52 @@ async function confirmDelete() {
 
     <ErrorAlert v-else-if="productStore.error" :message="productStore.error" @retry="loadProducts" />
 
-    <div v-else-if="!productStore.products.length" class="card text-center text-gray-500">
-      No se encontraron productos.
+    <div v-else-if="!productStore.products.length" class="empty-state">
+      <span class="grid size-11 place-items-center rounded-full bg-ink-100 text-ink-400">
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5v-9Z"/><path d="m3 7.5 9 4.5 9-4.5M12 12v9"/></svg>
+        </span>
+      <p>No se encontraron productos.</p>
     </div>
 
     <div v-else class="card overflow-x-auto p-0">
-      <table class="min-w-full divide-y divide-gray-200 text-sm">
-        <thead class="bg-gray-50 text-left text-xs font-semibold uppercase text-gray-500">
+      <table class="min-w-full divide-y divide-ink-200 text-sm">
+        <thead class="table-head">
         <tr>
-          <th class="px-4 py-3">Producto</th>
-          <th class="px-4 py-3">Categoría</th>
-          <th class="px-4 py-3 text-right">Precio</th>
-          <th class="px-4 py-3 text-center">Stock</th>
-          <th class="px-4 py-3 text-right">Acciones</th>
+          <th class="px-5 py-3.5">Producto</th>
+          <th class="px-5 py-3.5">Categoría</th>
+          <th class="px-5 py-3.5 text-right">Precio</th>
+          <th class="px-5 py-3.5 text-center">Stock</th>
+          <th class="px-5 py-3.5 text-right">Acciones</th>
         </tr>
         </thead>
-        <tbody class="divide-y divide-gray-100">
-        <tr v-for="product in productStore.products" :key="product.id" class="hover:bg-gray-50">
-          <td class="px-4 py-3">
-            <p class="font-medium text-gray-900">{{ product.name }}</p>
-            <p class="text-xs text-gray-500">{{ product.description || 'Sin descripción' }}</p>
+        <tbody class="divide-y divide-ink-100">
+        <tr v-for="product in productStore.products" :key="product.id" class="transition-colors duration-100 hover:bg-ink-50/70">
+          <td class="px-5 py-3.5">
+            <p class="font-medium text-ink-900">{{ product.name }}</p>
+            <p class="mt-0.5 max-w-xs truncate text-xs text-ink-500">{{ product.description || 'Sin descripción' }}</p>
           </td>
-          <td class="px-4 py-3 text-gray-600">{{ product.category?.name ?? '—' }}</td>
-          <td class="px-4 py-3 text-right font-medium">{{ formatCurrency(product.price) }}</td>
-          <td class="px-4 py-3 text-center">
+          <td class="px-5 py-3.5 text-ink-600">{{ product.category?.name ?? '—' }}</td>
+          <td class="px-5 py-3.5 text-right font-medium text-ink-900">{{ formatCurrency(product.price) }}</td>
+          <td class="px-5 py-3.5 text-center">
               <span
                   :class="[
-                  'rounded-full px-2.5 py-0.5 text-xs font-semibold',
-                  product.stock < LOW_STOCK_THRESHOLD ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700',
+                                    product.stock < LOW_STOCK_THRESHOLD ? 'badge-low' : 'badge-ok',
                 ]"
               >
                 {{ product.stock }}
               </span>
           </td>
-          <td class="px-4 py-3">
-            <div class="flex justify-end gap-2">
+          <td class="px-5 py-3.5">
+            <div class="flex justify-end gap-1">
               <RouterLink
                   :to="{ name: 'product-edit', params: { id: product.id } }"
-                  class="btn-secondary px-3 py-1"
+                  class="btn-row"
               >
                 Editar
               </RouterLink>
               <button
                   type="button"
-                  class="btn-danger px-3 py-1"
+                  class="btn-row-danger"
                   :disabled="productStore.deletingId === product.id"
                   @click="toDelete = product"
               >

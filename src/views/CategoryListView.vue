@@ -69,15 +69,15 @@ async function confirmDelete() {
 
 <template>
   <section>
-    <div class="mb-6">
-      <h1 class="text-2xl font-bold text-gray-900">Categorías</h1>
-      <p class="text-sm text-gray-500">Administra las categorías de tus productos</p>
+    <div class="mb-8">
+      <h1 class="page-title">Categorías</h1>
+      <p class="page-subtitle">Administra las categorías de tus productos</p>
     </div>
 
     <div class="grid gap-6 lg:grid-cols-3">
       <!-- Formulario -->
-      <form class="card h-fit space-y-4" novalidate @submit.prevent="submit">
-        <h2 class="text-lg font-semibold text-gray-900">
+      <form class="card h-fit space-y-4 lg:sticky lg:top-20" novalidate @submit.prevent="submit">
+        <h2 class="section-title">
           {{ isEditing ? 'Editar categoría' : 'Nueva categoría' }}
         </h2>
 
@@ -119,33 +119,36 @@ async function confirmDelete() {
 
         <ErrorAlert v-else-if="store.error" :message="store.error" @retry="store.fetchAll()" />
 
-        <div v-else-if="!store.categories.length" class="card text-center text-gray-500">
-          Aún no hay categorías registradas.
+        <div v-else-if="!store.categories.length" class="empty-state">
+          <span class="grid size-11 place-items-center rounded-full bg-ink-100 text-ink-400">
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5v-9Z"/><path d="m3 7.5 9 4.5 9-4.5M12 12v9"/></svg>
+        </span>
+          <p>Aún no hay categorías registradas.</p>
         </div>
 
         <div v-else class="card overflow-x-auto p-0">
-          <table class="min-w-full divide-y divide-gray-200 text-sm">
-            <thead class="bg-gray-50 text-left text-xs font-semibold uppercase text-gray-500">
+          <table class="min-w-full divide-y divide-ink-200 text-sm">
+            <thead class="table-head">
             <tr>
-              <th class="px-4 py-3">Nombre</th>
-              <th class="px-4 py-3">Descripción</th>
-              <th class="px-4 py-3 text-center">Productos</th>
-              <th class="px-4 py-3 text-right">Acciones</th>
+              <th class="px-5 py-3.5">Nombre</th>
+              <th class="px-5 py-3.5">Descripción</th>
+              <th class="px-5 py-3.5 text-center">Productos</th>
+              <th class="px-5 py-3.5 text-right">Acciones</th>
             </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
-            <tr v-for="category in store.categories" :key="category.id" class="hover:bg-gray-50">
-              <td class="px-4 py-3 font-medium text-gray-900">{{ category.name }}</td>
-              <td class="px-4 py-3 text-gray-600">{{ category.description || '—' }}</td>
-              <td class="px-4 py-3 text-center">{{ category.products_count ?? 0 }}</td>
-              <td class="px-4 py-3">
-                <div class="flex justify-end gap-2">
-                  <button type="button" class="btn-secondary px-3 py-1" @click="startEdit(category)">
+            <tbody class="divide-y divide-ink-100">
+            <tr v-for="category in store.categories" :key="category.id" class="transition-colors duration-100 hover:bg-ink-50/70">
+              <td class="px-5 py-3.5 font-medium text-ink-900">{{ category.name }}</td>
+              <td class="px-5 py-3.5 text-ink-600">{{ category.description || '—' }}</td>
+              <td class="px-5 py-3.5 text-center"><span class="badge bg-ink-100 text-ink-700 ring-ink-900/5">{{ category.products_count ?? 0 }}</span></td>
+              <td class="px-5 py-3.5">
+                <div class="flex justify-end gap-1">
+                  <button type="button" class="btn-row" @click="startEdit(category)">
                     Editar
                   </button>
                   <button
                       type="button"
-                      class="btn-danger px-3 py-1"
+                      class="btn-row-danger"
                       :disabled="store.deletingId === category.id"
                       @click="toDelete = category"
                   >
