@@ -1,3 +1,15 @@
+<script setup>
+  import { RouterView } from "vue-router"
+  import AppNavbar from "@/components/AppNavbar.vue"
+  import ToastContainer from "@/components/ToastContainer.vue"
+</script>
+
 <template>
-  <h1 class="p-8 text-3xl font-bold text-indigo-600">Overskull</h1>
+  <div class="min-h-screen bg-gray-50">
+    <AppNavbar />
+    <main class="mx-auto max-w-6xl px-4 py-8">
+      <RouterView />
+    </main>
+    <ToastContainer />
+  </div>
 </template>
